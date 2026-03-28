@@ -1,14 +1,17 @@
 package repository
 
-type User struct {
-	ID      uint   `json:"id"`
-	Name    string `json:"name"`
-	Age     uint8  `json:"age"`
-	Address string `json:"address"`
-}
+import (
+	"time"
 
-var Users = []User{
-	{ID: 1, Name: "Rendi", Age: 21, Address: "Kebonsari"},
-	{ID: 2, Name: "Heru", Age: 25, Address: "Jambangan"},
-	{ID: 3, Name: "Sarah", Age: 30, Address: "Gayungan"},
+	"gorm.io/gorm"
+)
+
+type User struct {
+	ID        uint           `gorm:"primaryKey" json:"id"`
+	Name      string         `json:"name" binding:"required"`
+	Age       uint8          `json:"age" binding:"required,gte=1,lte=120"`
+	Address   string         `json:"address" binding:"required"`
+	CreatedAt time.Time      `json:"created_at"`
+	UpdatedAt time.Time      `json:"updated_at"`
+	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
 }
